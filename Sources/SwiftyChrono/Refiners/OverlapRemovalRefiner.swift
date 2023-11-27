@@ -9,7 +9,7 @@
 import Foundation
 
 class OverlapRemovalRefiner: Refiner {
-    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: Int]) -> [ParsedResult] {
+    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: OptionValue]) -> [ParsedResult] {
         let resultsLength = results.count
         if resultsLength < 2 { return results }
         

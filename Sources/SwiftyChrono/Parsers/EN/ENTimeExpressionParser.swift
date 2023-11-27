@@ -40,7 +40,7 @@ private let amPmHourGroup = 5
 public class ENTimeExpressionParser: Parser {
     override var pattern: String { return FIRST_REG_PATTERN }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         // This pattern can be overlaped Ex. [12] AM, 1[2] AM
         let idx = match.range(at: 0).location
         let str = text.substring(from: idx - 1, to: idx)

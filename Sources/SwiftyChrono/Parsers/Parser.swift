@@ -17,11 +17,11 @@ public class Parser {
         self.strictMode = strictMode
     }
     
-    public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         return nil
     }
     
-    public func execute(text: String, ref: Date, opt: [OptionType: Int]) -> [ParsedResult] {
+    public func execute(text: String, ref: Date, opt: [OptionType: OptionValue]) -> [ParsedResult] {
         var results = [ParsedResult]()
         
         let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)

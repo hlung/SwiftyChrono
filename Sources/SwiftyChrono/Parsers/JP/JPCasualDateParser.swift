@@ -14,7 +14,7 @@ public class JPCasualDateParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .japanese }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let index = match.range(at: 0).location
         let matchText = match.string(from: text, atRangeIndex: 0)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
