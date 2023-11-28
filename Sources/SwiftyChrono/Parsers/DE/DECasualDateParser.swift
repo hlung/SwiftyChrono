@@ -35,8 +35,8 @@ public class DECasualDateParser: Parser {
                 startMoment = startMoment.added(-1, .day)
             }
         } else if NSRegularExpression.isMatch(forPattern: "jetzt", in: lowerText) {
-            result.start.imply(.hour, to: refMoment.hour)
-            result.start.imply(.minute, to: refMoment.minute)
+            result.start.assign(.hour, value: refMoment.hour)
+            result.start.assign(.minute, value: refMoment.minute)
             result.start.imply(.second, to: refMoment.second)
             result.start.imply(.millisecond, to: refMoment.millisecond)
         }
