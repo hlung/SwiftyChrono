@@ -26,28 +26,28 @@ public class DECasualTimeParser: Parser {
                 let option = opt[.morning]
                 let hour = option?.hour ?? 6
                 let minute = option?.minute ?? 0
-                result.start.imply(.hour, to: hour)
-                result.start.imply(.minute, to: minute)
+                result.start.assign(.hour, value: hour)
+                result.start.assign(.minute, value: minute)
             case "mittag":
                 let option = opt[.noon]
                 let hour = option?.hour ?? 12
                 let minute = option?.minute ?? 0
-                result.start.imply(.hour, to: hour)
-                result.start.imply(.minute, to: minute)
+                result.start.assign(.hour, value: hour)
+                result.start.assign(.minute, value: minute)
             case "nachmittag":
                 let option = opt[.afternoon]
                 let hour = option?.hour ?? 15
                 let minute = option?.minute ?? 0
-                result.start.imply(.hour, to: hour)
-                result.start.imply(.minute, to: minute)
-                result.start.imply(.meridiem, to: 1)
+                result.start.assign(.hour, value: hour)
+                result.start.assign(.minute, value: minute)
+                result.start.assign(.meridiem, value: 1)
             case "abend":
                 let option = opt[.evening]
                 let hour = option?.hour ?? 18
                 let minute = option?.minute ?? 0
-                result.start.imply(.hour, to: hour)
-                result.start.imply(.minute, to: minute)
-                result.start.imply(.meridiem, to: 1)
+                result.start.assign(.hour, value: hour)
+                result.start.assign(.minute, value: minute)
+                result.start.assign(.meridiem, value: 1)
             default: break
             }
         }
