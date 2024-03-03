@@ -14,7 +14,7 @@ public class DECasualDateParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .german }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let (matchText, index) = matchTextAndIndex(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
         
@@ -35,8 +35,8 @@ public class DECasualDateParser: Parser {
                 startMoment = startMoment.added(-1, .day)
             }
         } else if NSRegularExpression.isMatch(forPattern: "jetzt", in: lowerText) {
-            result.start.imply(.hour, to: refMoment.hour)
-            result.start.imply(.minute, to: refMoment.minute)
+            result.start.assign(.hour, value: refMoment.hour)
+            result.start.assign(.minute, value: refMoment.minute)
             result.start.imply(.second, to: refMoment.second)
             result.start.imply(.millisecond, to: refMoment.millisecond)
         }

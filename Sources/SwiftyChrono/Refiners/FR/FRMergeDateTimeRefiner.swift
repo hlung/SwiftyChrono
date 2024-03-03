@@ -93,7 +93,7 @@ private func mergeResult(refText text: String, dateResult: ParsedResult, timeRes
 }
 
 class FRMergeDateTimeRefiner: Refiner {
-    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: Int]) -> [ParsedResult] {
+    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: OptionValue]) -> [ParsedResult] {
         let resultsLength = results.count
         if resultsLength < 2 { return results }
         

@@ -9,7 +9,7 @@
 import Foundation
 
 class ForwardDateRefiner: Refiner {
-    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: Int]) -> [ParsedResult] {
+    override public func refine(text: String, results: [ParsedResult], opt: [OptionType: OptionValue]) -> [ParsedResult] {
         if !opt.keys.contains(.forwardDate) && !opt.keys.contains(.forwardDate) {
             return results
         }

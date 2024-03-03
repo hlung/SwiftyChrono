@@ -14,7 +14,7 @@ public class FRCasualDateParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .french }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let (matchText, index) = matchTextAndIndex(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
         
@@ -45,14 +45,17 @@ public class FRCasualDateParser: Parser {
                 startMoment = startMoment.added(-1, .day)
             }
         } else if NSRegularExpression.isMatch(forPattern: "(après-midi|aprem)", in: lowerText) {
-            result.start.imply(.hour, to: 14)
+            result.start.assign(.hour, value: opt[.afternoon]?.hour ?? 14)
+            result.start.assign(.minute, value: opt[.afternoon]?.minute ?? 0)
         } else if NSRegularExpression.isMatch(forPattern: "(soir)", in: lowerText) {
-            result.start.imply(.hour, to: 18)
+            result.start.assign(.hour, value: opt[.evening]?.hour ?? 18)
+            result.start.assign(.minute, value: opt[.evening]?.minute ?? 0)
         } else if NSRegularExpression.isMatch(forPattern: "matin", in: lowerText) {
-            result.start.imply(.hour, to: 8)
+            result.start.assign(.hour, value: opt[.morning]?.hour ?? 8)
+            result.start.assign(.minute, value: opt[.morning]?.minute ?? 0)
         } else if NSRegularExpression.isMatch(forPattern: "maintenant", in: lowerText) {
-            result.start.imply(.hour, to: refMoment.hour)
-            result.start.imply(.minute, to: refMoment.minute)
+            result.start.assign(.hour, value: refMoment.hour)
+            result.start.assign(.minute, value: refMoment.minute)
             result.start.imply(.second, to: refMoment.second)
             result.start.imply(.millisecond, to: refMoment.millisecond)
         }

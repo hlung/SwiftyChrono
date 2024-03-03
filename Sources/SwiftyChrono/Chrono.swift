@@ -8,12 +8,35 @@
 
 import Foundation
 
-public enum OptionType: String { case
-    morning = "morning",
-    afternoon = "afternoon",
-    evening = "evening",
-    noon = "noon",
-    forwardDate = "forwardDate"
+public enum OptionType: String {
+    case morning = "morning"
+    case afternoon = "afternoon"
+    case evening = "evening"
+    case noon = "noon"
+    case forwardDate = "forwardDate"
+}
+
+public enum OptionValue {
+    case time(hour: Int, minute: Int)
+    case on
+    
+    var hour: Int {
+        switch self {
+        case .time(let hour, _):
+            return hour
+        case .on:
+            return 0
+        }
+    }
+    
+    var minute: Int {
+        switch self {
+        case .time(_, let minute):
+            return minute
+        case .on:
+            return 0
+        }
+    }
 }
 
 public struct Chrono {
@@ -45,7 +68,7 @@ public struct Chrono {
         self.modeOption = modeOption
     }
     
-    public func parse(text: String, refDate: Date = Date(), opt: [OptionType: Int] = [:]) -> [ParsedResult] {
+    public func parse(text: String, refDate: Date = Date(), opt: [OptionType: OptionValue] = [:]) -> [ParsedResult] {
         var allResults = [ParsedResult]()
         
         if text.isEmpty {
@@ -83,7 +106,7 @@ public struct Chrono {
         return allResults
     }
     
-    public func parseDate(text: String, refDate: Date = Date(), opt: [OptionType: Int] = [:]) -> Date? {
+    public func parseDate(text: String, refDate: Date = Date(), opt: [OptionType: OptionValue] = [:]) -> Date? {
         let results = Chrono.casual.parse(text: text, refDate: refDate, opt: opt)
         return results.first?.start.date
     }

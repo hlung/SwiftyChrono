@@ -18,7 +18,7 @@ public class DETimeAgoFormatParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .german }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let idx = match.range(at: 0).location
         if idx > 0 && NSRegularExpression.isMatch(forPattern: "\\w", in: text.substring(from: idx - 1, to: idx)) {
             return nil

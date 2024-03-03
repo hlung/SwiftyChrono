@@ -22,11 +22,12 @@ public class DEMorgenTimeParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .german }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let (matchText, index) = matchTextAndIndex(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
         
-        result.start.imply(.hour, to: opt[.morning] ?? 6)
+        result.start.imply(.hour, to: opt[.morning]?.hour ?? 6)
+        result.start.imply(.hour, to: opt[.morning]?.minute ?? 0)
         
         let time = match.string(from: text, atRangeIndex: timeMatch).lowercased()
         

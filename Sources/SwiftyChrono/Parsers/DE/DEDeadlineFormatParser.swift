@@ -20,7 +20,7 @@ public class DEDeadlineFormatParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .german }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let (matchText, index) = matchTextAndIndex(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
         result.tags[.deDeadlineFormatParser] = true
@@ -36,7 +36,7 @@ public class DEDeadlineFormatParser: Parser {
         } else if NSRegularExpression.isMatch(forPattern: "halbe", in: numberText) {
             number = HALF
         } else {
-            number = Int(numberText)!
+            number = Int(numberText) ?? 0
         }
         
         var date = ref

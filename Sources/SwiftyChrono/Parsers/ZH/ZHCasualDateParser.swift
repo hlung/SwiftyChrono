@@ -27,13 +27,14 @@ public class ZHCasualDateParser: Parser {
     override var pattern: String { return PATTERN }
     override var language: Language { return .chinese }
     
-    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: Int]) -> ParsedResult? {
+    override public func extract(text: String, ref: Date, match: NSTextCheckingResult, opt: [OptionType: OptionValue]) -> ParsedResult? {
         let (matchText, index) = matchTextAndIndexForCHHant(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
         
         let refMoment = ref
         var startMoment = refMoment
         
+        // TODO: Possibly update to follow "morning, noon, afternoon, evening" opts
         if match.isNotEmpty(atRangeIndex: nowGroup) {
             result.start.imply(.hour, to: refMoment.hour)
             result.start.imply(.minute, to: refMoment.minute)
@@ -53,9 +54,11 @@ public class ZHCasualDateParser: Parser {
             }
             
             if time1 == "早" || time1 == "朝" {
-                result.start.imply(.hour, to: 6)
+                result.start.assign(.hour, value: opt[.morning]?.hour ?? 6)
+                result.start.assign(.minute, value: opt[.morning]?.minute ?? 6)
             } else if time1 == "晚" {
-                result.start.imply(.hour, to: 22)
+                result.start.assign(.hour, value: opt[.evening]?.hour ?? 22)
+                result.start.assign(.minute, value: opt[.evening]?.minute ?? 22)
                 result.start.imply(.meridiem, to: 1)
             }
             
@@ -64,18 +67,21 @@ public class ZHCasualDateParser: Parser {
             let time2 = timeString2.firstString ?? ""
             
             if time2 == "早" || time2 == "朝" || time2 == "上" {
-                result.start.imply(.hour, to: 6)
+                result.start.assign(.hour, value: opt[.morning]?.hour ?? 6)
+                result.start.assign(.minute, value: opt[.morning]?.minute ?? 6)
             } else if time2 == "下" || time2 == "晏" {
-                result.start.imply(.hour, to: 15)
+                result.start.assign(.hour, value: opt[.afternoon]?.hour ?? 15)
+                result.start.assign(.minute, value: opt[.afternoon]?.minute ?? 0)
                 result.start.imply(.meridiem, to: 1)
             } else if time2 == "中" {
-                result.start.imply(.hour, to: 12)
+                result.start.assign(.hour, value: 12)
                 result.start.imply(.meridiem, to: 1)
             } else if time2 == "夜" || time2 == "晚" {
-                result.start.imply(.hour, to: 22)
+                result.start.assign(.hour, value: opt[.evening]?.hour ?? 22)
+                result.start.assign(.minute, value: opt[.evening]?.minute ?? 22)
                 result.start.imply(.meridiem, to: 1)
             } else if time2 == "凌" {
-                result.start.imply(.hour, to: 0)
+                result.start.assign(.hour, value: 0)
             }
             
         } else if match.isNotEmpty(atRangeIndex: dayGroup3) {
@@ -95,18 +101,21 @@ public class ZHCasualDateParser: Parser {
                 let time3 = timeString3.firstString ?? ""
                 
                 if time3 == "早" || time3 == "朝" || time3 == "上" {
-                    result.start.imply(.hour, to: 6)
+                    result.start.assign(.hour, value: opt[.morning]?.hour ?? 6)
+                    result.start.assign(.minute, value: opt[.morning]?.minute ?? 6)
                 } else if time3 == "下" || time3 == "晏" {
-                    result.start.imply(.hour, to: 15)
+                    result.start.assign(.hour, value: opt[.afternoon]?.hour ?? 15)
+                    result.start.assign(.minute, value: opt[.afternoon]?.minute ?? 0)
                     result.start.imply(.meridiem, to: 1)
                 } else if time3 == "中" {
-                    result.start.imply(.hour, to: 12)
+                    result.start.assign(.hour, value: 12)
                     result.start.imply(.meridiem, to: 1)
                 } else if time3 == "夜" || time3 == "晚" {
-                    result.start.imply(.hour, to: 22)
+                    result.start.assign(.hour, value: opt[.evening]?.hour ?? 22)
+                    result.start.assign(.minute, value: opt[.evening]?.minute ?? 22)
                     result.start.imply(.meridiem, to: 1)
                 } else if time3 == "凌" {
-                    result.start.imply(.hour, to: 0)
+                    result.start.assign(.hour, value: 0)
                 }
             }
         }
